@@ -103,8 +103,8 @@ export default function LoginPage() {
           <CardTitle className="text-2xl">Bienvenido a AWA</CardTitle>
           <CardDescription>
             {isCliente
-              ? "Ingresá como clienteee para buscar proveedores de agua"
-              : "Ingresá como proveedorrr para gestionar tu negocio"}
+              ? "Ingresá como cliente para buscar proveedores de agua"
+              : "Ingresá como proveedor para gestionar tu negocio"}
           </CardDescription>
         </CardHeader>
 
