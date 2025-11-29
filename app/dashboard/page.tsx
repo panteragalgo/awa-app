@@ -5,7 +5,7 @@ import ClienteDashboard from "@/components/dashboard/cliente-dashboard"
 export default async function DashboardPage() {
   const supabase = await createClient()
 
-  // Verificar si el usuario está autenticado
+  // Verificar si el usuario está autenticadooo
   const {
     data: { user },
     error: authError,
