@@ -1,0 +1,192 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Droplet, User, ArrowLeft, Loader2 } from "lucide-react"
+
+export default function ClienteAuthPage() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const router = useRouter()
+  const supabase = createClient()
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError(null)
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (authError) throw authError
+
+      // Verify user type
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("user_type")
+        .eq("id", authData.user.id)
+        .single()
+
+      if (profileError) throw profileError
+
+      if (profile.user_type !== "cliente") {
+        await supabase.auth.signOut()
+        throw new Error("Esta cuenta no es de cliente. Por favor usá el login de proveedor.")
+      }
+
+      router.push("/dashboard")
+    } catch (err: any) {
+      console.error("[v0] Error en login:", err)
+      setError(err.message || "Error al iniciar sesión")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError(null)
+    setSuccess(null)
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+    const nombre = formData.get("nombre") as string
+    const telefono = formData.get("telefono") as string
+
+    try {
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`,
+          data: {
+            full_name: nombre,
+            phone: telefono,
+            user_type: "cliente",
+          },
+        },
+      })
+
+      if (signUpError) throw signUpError
+
+      setSuccess("¡Cuenta creada! Revisá tu email para confirmar tu cuenta.")
+    } catch (err: any) {
+      console.error("[v0] Error en registro:", err)
+      setError(err.message || "Error al crear cuenta")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-sky-50 via-white to-cyan-50 p-6 dark:from-slate-900 dark:via-background dark:to-slate-900">
+      <div className="mb-6 flex w-full max-w-md items-center justify-between">
+        <Button variant="ghost" asChild>
+          <Link href="/auth">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Cambiar tipo de cuenta
+          </Link>
+        </Button>
+        <div className="rounded-full bg-blue-100 px-4 py-1 text-sm font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+          <User className="mr-1 inline h-4 w-4" />
+          Cliente
+        </div>
+      </div>
+
+      <Card className="w-full max-w-md border-2 border-blue-500/20">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-500/10">
+            <Droplet className="h-8 w-8 text-blue-600" />
+          </div>
+          <CardTitle className="text-2xl">Bienvenido a AWA</CardTitle>
+          <CardDescription>Ingresá como cliente para buscar proveedores de agua</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="login">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
+              <TabsTrigger value="register">Registrarse</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="login" className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="login-email">Email</Label>
+                  <Input id="login-email" name="email" type="email" required placeholder="tu@email.com" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="login-password">Contraseña</Label>
+                  <Input id="login-password" name="password" type="password" required placeholder="••••••••" />
+                </div>
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Iniciar Sesión
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="register" className="space-y-4">
+              <form onSubmit={handleRegister} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="register-nombre">Nombre completo</Label>
+                  <Input id="register-nombre" name="nombre" required placeholder="Juan Pérez" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="register-email">Email</Label>
+                  <Input id="register-email" name="email" type="email" required placeholder="tu@email.com" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="register-telefono">Teléfono</Label>
+                  <Input id="register-telefono" name="telefono" type="tel" required placeholder="+54 9 11 1234-5678" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="register-password">Contraseña</Label>
+                  <Input id="register-password" name="password" type="password" required placeholder="••••••••" />
+                </div>
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                {success && (
+                  <Alert>
+                    <AlertDescription>{success}</AlertDescription>
+                  </Alert>
+                )}
+                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Crear Cuenta
+                </Button>
+              </form>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bienvenido a AWA - Proveedor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f3f4f6; padding: 20px 0;">
+        <tr>
+            <td align="center">
+                <!-- Main Container -->
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- Header with Gradient -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 36px; font-weight: bold; letter-spacing: 2px;">AWA</h1>
+                            <p style="margin: 10px 0 0; color: #ffffff; font-size: 14px; opacity: 0.9;">Portal de Proveedores</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <h2 style="margin: 0 0 10px; color: #1f2937; font-size: 24px; font-weight: bold;">¡Hola {{nombre}}! 👋</h2>
+                            
+                            <h3 style="margin: 20px 0; color: #10B981; font-size: 28px; font-weight: bold;">¡Bienvenido(a) a AWA como Proveedor! 🏪</h3>
+                            
+                            <p style="margin: 20px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                                Gracias por registrarte. Tu cuenta de proveedor está casi lista.
+                            </p>
+                            
+                            <p style="margin: 20px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                                Para confirmar tu email y activar tu cuenta de <strong>proveedor</strong>, hacé clic en el botón:
+                            </p>
+                            
+                            <!-- CTA Button -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="{{confirmation_url}}" style="display: inline-block; background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 16px 48px; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                                            ACTIVAR MI CUENTA DE PROVEEDOR
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Info Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius: 8px; border-left: 4px solid #10B981;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0; color: #065f46; font-size: 15px; line-height: 1.6;">
+                                            <strong>💼 Próximos pasos:</strong><br>
+                                            Una vez activada tu cuenta, podrás configurar tu catálogo de productos, establecer zonas de entrega y comenzar a recibir pedidos de clientes.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Alternative Link -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 30px 0; padding: 20px; background-color: #f9fafb; border-radius: 8px;">
+                                <tr>
+                                    <td>
+                                        <p style="margin: 0 0 10px; color: #6b7280; font-size: 14px;">
+                                            ¿Problemas con el botón? Copiá este enlace en tu navegador:
+                                        </p>
+                                        <a href="{{confirmation_url}}" style="color: #10B981; font-size: 14px; word-break: break-all;">{{confirmation_url}}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Divider -->
+                            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+                            
+                            <!-- Security Note -->
+                            <p style="margin: 20px 0; color: #9ca3af; font-size: 14px; line-height: 1.6;">
+                                <strong>Nota de seguridad:</strong> Si no creaste esta cuenta, podés ignorar este correo de forma segura.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 30px; text-align: center; border-top: 1px solid #e5e7eb;">
+                            <h2 style="margin: 0 0 10px; color: #10B981; font-size: 24px; font-weight: bold; letter-spacing: 1px;">AWA</h2>
+                            <p style="margin: 10px 0; color: #6b7280; font-size: 14px;">El equipo de AWA 💧</p>
+                            
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="#" style="color: #10B981; text-decoration: none; font-size: 13px; margin: 0 10px;">Ayuda</a>
+                                        <span style="color: #d1d5db;">|</span>
+                                        <a href="#" style="color: #10B981; text-decoration: none; font-size: 13px; margin: 0 10px;">Términos</a>
+                                        <span style="color: #d1d5db;">|</span>
+                                        <a href="#" style="color: #10B981; text-decoration: none; font-size: 13px; margin: 0 10px;">Privacidad</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <p style="margin: 15px 0 0; color: #9ca3af; font-size: 12px;">
+                                © 2025 AWA. Todos los derechos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
